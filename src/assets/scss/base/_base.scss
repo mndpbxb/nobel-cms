@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  font-weight: 400;
+  height: 100%;
+  font-size: 0.875rem;
+  @include scrollable;
+}
+
+a {
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  outline: 0;
+
+  color: inherit;
+  &:visited {
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    outline: 0;
+
+    // color: inherit;
+  }
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+  &:focus {
+    text-decoration: none;
+    outline: 0;
+    color: inherit;
+  }
+}

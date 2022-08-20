@@ -1,0 +1,36 @@
+@mixin scrollable($thumb: $purple, $track: $white) {
+  overflow: auto;
+  //padding-right: .5rem;
+
+  /* width */
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: $track;
+    border-radius: 4px;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: rgba($thumb, 0.8);
+    border-radius: 4px;
+    // cursor: pointer;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: $thumb;
+    cursor: pointer;
+  }
+}
+
+@mixin GridView($min: 145px, $max: 1fr, $gap: 20px) {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax($min, $max));
+  grid-gap: $gap;
+}

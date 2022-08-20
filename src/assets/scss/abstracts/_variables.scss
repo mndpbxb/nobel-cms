@@ -1,0 +1,92 @@
+$typeface-primary: "Poppins";
+$typeface-secondary: "Inter";
+
+//bootstrap configuratin start
+
+// Ratios for typography
+$double-octave: 4;
+$pi: 3.14159265359;
+$major-twelfth: 3;
+$major-eleventh: 2.666666667;
+$major-tenth: 2.5;
+$octave: 2;
+$major-seventh: 1.875;
+$minor-seventh: 1.777777778;
+$major-sixth: 1.666666667;
+$phi: 1.618034;
+$golden: $phi;
+$minor-sixth: 1.6;
+$fifth: 1.5;
+$augmented-fourth: 1.41421;
+$fourth: 1.333333333;
+$major-third: 1.25;
+$minor-third: 1.2;
+$major-second: 1.125;
+$minor-second: 1.066666667;
+
+//font sizes
+$font-sizes: (
+  h1: 2.488rem,
+  h2: 2.074rem,
+  h3: 1.728rem,
+  h4: 1.44rem,
+  h5: 1.2rem,
+  h6: 1rem,
+  p: 0.833rem,
+  small: 0.694rem,
+);
+
+//new grid at 1440px
+
+$grid-breakpoints: (
+  xs: 0,
+  nm: 440px,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1366px,
+);
+
+//responsive font size setting
+
+$font-size-base: 1rem;
+$enable-responsive-font-sizes: true;
+$rfs-factor: $minor-third;
+$rfs-unit: px;
+$rfs-breakpoint: 1920px;
+
+$grid-gutter-width: 16px !default;
+
+$body-bg: #ffffff;
+$line-height-base: 1.4;
+
+$dark-blue: #001d3d;
+$dark-blue-10: #1e1e2d;
+$purple: #625bf7;
+$light-gray: #f8f8f8;
+$light-border: #eff2f5;
+$table-header: #f8f8f8;
+$header-color: #b5b5c3;
+
+$theme-colors: (
+  "dark-blue": $dark-blue,
+  "dark-blue-10": $dark-blue-10,
+  "purple": $purple,
+  "light-gray": $light-gray,
+  "light-border": $light-border,
+);
+
+$custom-colors: (
+  "dark-blue": $dark-blue,
+  "dark-blue-10": $dark-blue-10,
+  "purple": $purple,
+  "light-gray": $light-gray,
+  "light-border": $light-border,
+  "table-header": $table-header,
+  "header-color": $header-color,
+);
+$theme-colors: map-merge($theme-colors, $custom-colors);
+$utilities-text: map-merge($theme-colors, $custom-colors);
+$buttons: map-merge($theme-colors, $custom-colors);
+$tooltip-bg: #0b329b;

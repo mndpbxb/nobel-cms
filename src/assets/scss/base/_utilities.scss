@@ -1,0 +1,21 @@
+.line {
+  height: 2px;
+}
+
+.icon {
+  &-sm {
+    font-size: 3rem;
+  }
+
+  &-md {
+    font-size: 3rem;
+  }
+}
+
+.scrollable {
+  @include scrollable;
+}
+
+.rounded-border {
+  border-radius: 0.25rem !important;
+}

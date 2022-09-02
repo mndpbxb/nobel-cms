@@ -1,13 +1,13 @@
 import * as Yup from "yup";
 
 export type FormType = {
-  permissionName: string;
+  name: string;
 };
 
 export const initialFormData: FormType = {
-  permissionName: "",
+  name: "",
 };
 
 export const validationSchema = Yup.object().shape({
-  permissionName: Yup.string().required("Please enter permission name"),
+  name: Yup.string().required("Please enter permission name"),
 });

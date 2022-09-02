@@ -12,8 +12,10 @@ import { HeaderContextProvider } from "./context/HeaderContext";
 import { UserContextProvider } from "./context/UserContext";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
+import 'react-toastify/dist/ReactToastify.css';
 
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 function App() {
   // Disable Console
@@ -56,6 +58,7 @@ function App() {
   return (
     <React.Fragment>
       <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
         <ThemeProvider theme={theme}>
           <UserContextProvider>
             <HeaderContextProvider>

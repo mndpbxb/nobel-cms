@@ -1,13 +1,15 @@
-import { IconButton } from "@mui/material";
+import { Chip, IconButton } from "@mui/material";
 import { GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { BsFillEyeFill } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
+import { useQuery } from "react-query";
 import Table from "../../../../components/Table/Table";
 import TableHeader from "../../../../components/Table/TableHeader";
 import { useHeaderDetails } from "../../../../context/HeaderContext";
 import { SideBarPaths } from "../../SideBar/SidebarPaths";
+import { adminServices } from "../../../../service/admin-services";
 
 const Roles = () => {
   const [searchQuery, setSearchQUery] = useState<string>("");
@@ -16,11 +18,18 @@ const Roles = () => {
   useEffect(() => {
     headerDetails.setSubHeader("Roles");
   }, []);
+
+  const { data, isSuccess } = useQuery(["roles"], adminServices.getRoles);
+
+  if (!isSuccess) {
+    return <>Loading...</>;
+  }
+
   const handleSearch = () => {};
 
   const columns: GridColDef[] = [
     {
-      field: "roles",
+      field: "name",
       headerName: "Role Name",
 
       flex: 2,
@@ -30,6 +39,14 @@ const Roles = () => {
       headerName: "Permission Name",
 
       flex: 2,
+
+      renderCell: (params) => (
+        <>
+          {params.row.permissions.map((permission, index) => (
+            <Chip label={permission.name} key={index} />
+          ))}
+        </>
+      ),
     },
     {
       headerName: "Actions",
@@ -51,12 +68,7 @@ const Roles = () => {
     },
   ];
 
-  const rows = [
-    { id: 1, roles: "Student", permissions: "User Management" },
-    { id: 2, roles: "Teacher", permissions: "Academics" },
-    { id: 3, roles: "Admin", permissions: "Notice" },
-    { id: 4, roles: "HOD", permissions: "Attendance" },
-  ];
+  const rows = data.data;
   return (
     <div className="d-flex flex-column w-100 mt-3">
       <TableHeader

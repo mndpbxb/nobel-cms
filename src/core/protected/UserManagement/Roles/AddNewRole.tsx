@@ -15,33 +15,64 @@ import {
   FormLabel,
 } from "@mui/material";
 import { Field, Form, Formik } from "formik";
-import React, { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useMutation, useQuery } from "react-query";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import FormGroup from "../../../../components/FormComponents/FormGroup";
 import { useHeaderDetails } from "../../../../context/HeaderContext";
+import { adminServices } from "../../../../service/admin-services";
 import { SideBarPaths } from "../../SideBar/SidebarPaths";
 import { initialFormData, validationSchema } from "./schema";
 
 const AddNewRole = () => {
   const formRef = useRef(null);
   const headerDetails = useHeaderDetails();
+  const navigate = useNavigate();
+  const { mutate, isLoading } = useMutation(adminServices.storeRoles);
+  const [permissions, setPermission] = useState([]);
+  // const [options, setOptions] = useState([]);
 
+  const { data, isSuccess } = useQuery(["permissions"], () =>
+    adminServices.getPermissions(true)
+  );
   useEffect(() => {
     headerDetails.setSubHeader("Add Role");
   }, []);
 
-  const options = [
-    { label: "BSC", value: "1" },
-    { label: "BSC", value: "2" },
+  if (!isSuccess) return <>Loading</>;
 
-    { label: "BSC", value: "3" },
+  const options = [];
+  data.map((row) =>
+    options.push({
+      label: row.name,
+      value: row.id,
+    })
+  );
+  const handleSubmit = (values) => {
+    const { name, permissions } = values;
+    mutate(
+      { name, permissions },
+      {
+        onSuccess: (res) => {
+          toast.success(`${res.data.message}`);
+          navigate(SideBarPaths.usermanagement.userPermissions);
+        },
+      }
+    );
+  };
+  // console.log(data);
 
-    { label: "BSC", value: "4" },
+  // data.map((row) =>
+  //   setOptions((oldValues) => [
+  //     ...oldValues,
+  //     {
+  //       label: row.name,
+  //       value: row.id,
+  //     },
+  //   ])
+  // );
 
-    { label: "BSC", value: "6" },
-
-    { label: "BSC", value: "5" },
-  ];
   return (
     <div className="d-flex flex-column w-100 mt-3">
       <div className="rounded p-4 d-flex flex-column  border-secondary border">
@@ -58,7 +89,7 @@ const AddNewRole = () => {
             touched,
             errors,
             values,
-            handleChange,
+            setFieldValue,
             handleBlur,
           }) => (
             <>
@@ -71,9 +102,11 @@ const AddNewRole = () => {
                       name="roleName"
                       errors={errors}
                       touched={touched}
-                      value={values.roleName}
+                      value={values.name}
                       handleBlur={handleBlur}
-                      handleChange={handleChange}
+                      handleChange={(e) => {
+                        setFieldValue("name", e.target.value);
+                      }}
                     />
                   </div>
                 </div>
@@ -89,7 +122,13 @@ const AddNewRole = () => {
                     errors={errors}
                     touched={touched}
                     value={values.permissions}
-                    handleChange={handleChange}
+                    handleChange={(e: any) => {
+                      setFieldValue(
+                        "permissions",
+
+                        [...values.permissions, e.target.value]
+                      );
+                    }}
                     options={options}
                   />
                 </div>

@@ -4,13 +4,15 @@ import { useEffect, useState } from "react";
 import { BsFillEyeFill } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
+import { useQuery } from "react-query";
 import Table from "../../../../components/Table/Table";
 import TableHeader from "../../../../components/Table/TableHeader";
 import { useHeaderDetails } from "../../../../context/HeaderContext";
-import { SideBarItems } from "../../SideBar/SidebarItems";
 import { SideBarPaths } from "../../SideBar/SidebarPaths";
+import { adminServices } from "../../../../service/admin-services";
 
 const Permissions = () => {
+
   const [searchQuery, setSearchQUery] = useState<string>("");
   const headerDetails = useHeaderDetails();
 
@@ -18,11 +20,20 @@ const Permissions = () => {
     headerDetails.setSubHeader("Permissions");
   }, []);
 
+  const { data, isSuccess } = useQuery(
+    ["permissions"],
+    ()=>adminServices.getPermissions(false)
+  );
+
+  if (!isSuccess) {
+    return <>Loading...</>
+  }
+
   const handleSearch = () => {};
 
   const columns: GridColDef[] = [
     {
-      field: "permissions",
+      field: "name",
       headerName: "Permissions",
       width: 70,
       flex: 2,
@@ -47,12 +58,7 @@ const Permissions = () => {
     },
   ];
 
-  const rows = [
-    { id: 1, permissions: "User Management" },
-    { id: 2, permissions: "Academics" },
-    { id: 3, permissions: "Notice" },
-    { id: 4, permissions: "Attendance" },
-  ];
+  const rows = data
   return (
     <div className="d-flex flex-column w-100 mt-3">
       <TableHeader

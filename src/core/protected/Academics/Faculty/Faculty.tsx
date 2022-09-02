@@ -8,6 +8,8 @@ import Table from "../../../../components/Table/Table";
 import TableHeader from "../../../../components/Table/TableHeader";
 import { useHeaderDetails } from "../../../../context/HeaderContext";
 import { SideBarPaths } from "../../SideBar/SidebarPaths";
+import { adminServices } from '../../../../service/admin-services';
+import { useQuery } from 'react-query';
 
 const Faculty = () => {
   const [searchQuery, setSearchQUery] = useState<string>("");
@@ -17,17 +19,26 @@ const Faculty = () => {
     headerDetails.setSubHeader("Faculty");
   }, []);
 
+  const { data, isSuccess } = useQuery(
+    ["faculties"],
+    adminServices.getFaculties
+  );
+
+  if (!isSuccess) {
+    return <>Loading...</>
+  }
+
   const handleSearch = () => {};
 
   const columns: GridColDef[] = [
     {
-      field: "faculty",
+      field: "id",
       headerName: "Faculty ID",
 
       flex: 2,
     },
     {
-      field: "facultyname",
+      field: "name",
       headerName: "Faculty Name",
 
       flex: 2,
@@ -52,12 +63,7 @@ const Faculty = () => {
     },
   ];
 
-  const rows = [
-    { id: 1, faculty: "Mgmt", facultyname: "Faculty of Management" },
-    { id: 2, faculty: "Sci", facultyname: "Faculty of Science" },
-    { id: 3, faculty: "Nur", facultyname: "Faculty of Nursing" },
-    { id: 4, faculty: "Bph", facultyname: "Bachelor of Pharmacy" },
-  ];
+  const rows = data.data;
   return (
     <div className="d-flex flex-column w-100 mt-3">
       <TableHeader

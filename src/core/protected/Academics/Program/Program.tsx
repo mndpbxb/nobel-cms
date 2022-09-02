@@ -8,6 +8,8 @@ import Table from "../../../../components/Table/Table";
 import TableHeader from "../../../../components/Table/TableHeader";
 import { useHeaderDetails } from "../../../../context/HeaderContext";
 import { SideBarPaths } from "../../SideBar/SidebarPaths";
+import { useQuery } from "react-query";
+import { adminServices } from "../../../../service/admin-services";
 
 const Program = () => {
   const [searchQuery, setSearchQUery] = useState<string>("");
@@ -16,20 +18,41 @@ const Program = () => {
   useEffect(() => {
     headerDetails.setSubHeader("Programs");
   }, []);
+
+  const { data, isSuccess } = useQuery(["programs"], adminServices.getPrograms);
+
+  if (!isSuccess) {
+    return <>Loading...</>;
+  }
   const handleSearch = () => {};
 
   const columns: GridColDef[] = [
     {
-      field: "program",
+      field: "id",
       headerName: "Program ID",
 
       flex: 2,
     },
     {
-      field: "programname",
+      field: "name",
       headerName: "Program Name",
 
       flex: 2,
+    },
+    {
+      field: "description",
+      headerName: "Description",
+
+      flex: 2,
+    },
+    {
+      field: "faculty.name",
+      headerName: "Faculty Name",
+
+      flex: 2,
+      valueGetter: (params) => {
+        return params.row.faculty.name;
+      },
     },
     {
       headerName: "Actions",
@@ -51,20 +74,7 @@ const Program = () => {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      program: "BCIS",
-      programname: "Bachelor in Computer Information System",
-    },
-    {
-      id: 2,
-      program: "BBA",
-      programname: "Bachelor in Business Admininstration  ",
-    },
-    { id: 3, program: "BPH", programname: "Bachelor in Pharmacy" },
-    { id: 4, program: "NUR", programname: "Bachelor in Nursing" },
-  ];
+  const rows = data.data;
   return (
     <div className="d-flex flex-column w-100 mt-3">
       <TableHeader
